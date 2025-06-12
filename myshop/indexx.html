@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Electronics Store</title>
+  <link rel="stylesheet" href="style-en.css" />
+</head>
+<body>
+
+  <header>
+    <div class="top-bar">
+      <span>Electro_store@hotmail.com</span>
+    </div>
+    <nav>
+      <form class="search-form" onsubmit="event.preventDefault(); searchProducts();">
+        <input type="text" id="searchInput" placeholder="Search for a product..." />
+        <button type="submit">Search</button>
+      </form>
+      <div class="nav-icons">
+        <a class="cart-button" href="cod1.html">🛒</a>
+        <a class="login-button" href="login.html">👤 Login</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Welcome to the Electronics Store</h1>
+    <div class="hero-icons">
+      <div class="icon-box" onclick="filterCategory('all')">
+        <img src="images/alll.jpg" alt="All" />
+        <p>All</p>
+      </div>
+      <div class="icon-box" onclick="filterCategory('phones')">
+        <img src="images/phones.webp" alt="Phones" />
+        <p>Phones</p>
+      </div>
+      <div class="icon-box" onclick="filterCategory('laptops')">
+        <img src="images/laptops.jpg" alt="Laptops" />
+        <p>Laptops</p>
+      </div>
+      <div class="icon-box" onclick="filterCategory('headphones')">
+        <img src="images/headphonesall.jpg" alt="Accessories" />
+        <p>Accessories</p>
+      </div>
+      <div class="icon-box" onclick="filterCategory('sale')">
+        <img src="images/sale.jpg" alt="Sale" />
+        <p>Sale</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="products">
+    <h2>Featured Products</h2>
+    <div class="product-grid">
+
+      <div class="product-card phones">
+        <img src="images/Samsung.png" alt="Samsung Phone" />
+        <h3>Samsung Phone</h3>
+        <p>Price: <span class="currency">SAR</span> 2500</p>
+        <button onclick="addToCart('Samsung Phone', 2500, 'images/Samsung.png')">Add to Cart</button>
+      </div>
+
+      <div class="product-card laptops">
+        <img src="images/hp.png" alt="HP Laptop" />
+        <h3>HP Laptop</h3>
+        <p>Price: <span class="currency">SAR</span> 3500</p>
+        <button onclick="addToCart('HP Laptop', 3500, 'images/hp.png')">Add to Cart</button>
+      </div>
+
+      <div class="product-card headphones">
+        <img src="images/headphones.png" alt="Bluetooth Headphones" />
+        <h3>Bluetooth Headphones</h3>
+        <p>Price: <span class="currency">SAR</span> 300</p>
+        <button onclick="addToCart('Bluetooth Headphones', 300, 'images/headphones.png')">Add to Cart</button>
+      </div>
+
+      <div class="product-card phones sale">
+        <img src="images/iphone.png" alt="iPhone 13" />
+        <h3>iPhone 13</h3>
+        <p><del><span class="currency">SAR</span> 4000</del> <span class="currency">SAR</span> 3500</p>
+        <button onclick="addToCart('iPhone 13', 3500, 'images/iphone.png')">Add to Cart</button>
+      </div>
+
+      <div class="product-card laptops sale">
+        <img src="images/lenovo.png" alt="Lenovo Laptop" />
+        <h3>Lenovo Laptop</h3>
+        <p><del><span class="currency">SAR</span> 3000</del> <span class="currency">SAR</span> 2600</p>
+        <button onclick="addToCart('Lenovo Laptop', 2600, 'images/lenovo.png')">Add to Cart</button>
+      </div>
+
+    </div>
+  </section>
+
+  <footer style="text-align: center; padding: 30px; background-color: #222;">
+    <a href="faq.html" style="color: white; background-color: #007B5E; padding: 10px 20px; border-radius: 5px; text-decoration: none;">
+      Frequently Asked Questions
+    </a>
+  </footer>
+
+  <script>
+    function saveCartToCookies(cart) {
+      document.cookie = "cart=" + encodeURIComponent(JSON.stringify(cart)) + "; path=/; max-age=" + (60 * 60 * 24 * 7);
+    }
+  
+    function getCartFromCookies() {
+      const cookies = document.cookie.split("; ");
+      const cartCookie = cookies.find(row => row.startsWith("cart="));
+      return cartCookie ? JSON.parse(decodeURIComponent(cartCookie.split("=")[1])) : [];
+    }
+  
+    function addToCart(productName, productPrice, productImage) {
+      let cart = getCartFromCookies();
+      const product = cart.find(item => item.name === productName);
+  
+      if (product) {
+        product.quantity += 1;
+      } else {
+        cart.push({ name: productName, quantity: 1, price: productPrice, image: productImage });
+      }
+  
+      saveCartToCookies(cart);
+      alert(productName + " has been added to the cart!");
+    }
+  
+    function searchProducts() {
+      var input = document.getElementById("searchInput").value.toLowerCase();
+      var products = document.getElementsByClassName("product-card");
+      for (var i = 0; i < products.length; i++) {
+        var title = products[i].getElementsByTagName("h3")[0].textContent.toLowerCase();
+        products[i].style.display = title.includes(input) ? "flex" : "none";
+      }
+    }
+  
+    function filterCategory(category) {
+      var products = document.getElementsByClassName("product-card");
+      for (var i = 0; i < products.length; i++) {
+        products[i].style.display =
+          category === "all" || products[i].classList.contains(category)
+            ? "flex"
+            : "none";
+      }
+    }
+  </script>
+  
+  
+  
+
+</body>
+</html>
+
+
+
